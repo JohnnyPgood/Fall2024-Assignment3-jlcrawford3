@@ -8,22 +8,24 @@ namespace Fall2024_Assignment3_jlcrawford3.Models
         public int Id { get; set; }
 
         [Required]
-        public required string Title { get; set; }
+        public string Title { get; set; } = default!;
 
         [Required]
         [Url]
-        public required string Imdb { get; set; }
+        public string Imdb { get; set; } = default!;
 
         [Required]
-        public required string Genre { get; set; }
+        public string Genre { get; set; } = default!;
 
         [Required]
+        [Range(1888, 2024)]
         public int Year { get; set; }
 
         [Required]
         [Url]
-        public required string Poster { get; set; }
+        public string Poster { get; set; } = default!;
 
-        public required ICollection<MovieActor> MovieActors { get; set; }
+        // Navigation property for the many-to-many relationship between Movies and Actors
+        public virtual ICollection<MovieActor>? MovieActors { get; set; } = default!;
     }
 }

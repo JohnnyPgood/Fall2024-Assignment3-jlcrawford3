@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Fall2024_Assignment3_jlcrawford3.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241024141946_OnTheSecondDayHeRemadeDb")]
+    [Migration("20241024185124_OnTheSecondDayHeRemadeDb")]
     partial class OnTheSecondDayHeRemadeDb
     {
         /// <inheritdoc />
@@ -97,10 +97,10 @@ namespace Fall2024_Assignment3_jlcrawford3.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("ActorId")
+                    b.Property<int?>("ActorId")
                         .HasColumnType("int");
 
-                    b.Property<int>("MovieId")
+                    b.Property<int?>("MovieId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -318,15 +318,11 @@ namespace Fall2024_Assignment3_jlcrawford3.Data.Migrations
                 {
                     b.HasOne("Fall2024_Assignment3_jlcrawford3.Models.Actor", "Actor")
                         .WithMany("MovieActors")
-                        .HasForeignKey("ActorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ActorId");
 
                     b.HasOne("Fall2024_Assignment3_jlcrawford3.Models.Movie", "Movie")
                         .WithMany("MovieActors")
-                        .HasForeignKey("MovieId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("MovieId");
 
                     b.Navigation("Actor");
 
