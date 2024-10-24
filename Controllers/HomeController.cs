@@ -1,6 +1,6 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using Fall2024_Assignment3_jlcrawford3.Models;
+using Fall2024_Assignment3_jlcrawford3.Models.ViewModels;
 
 namespace Fall2024_Assignment3_jlcrawford3.Controllers;
 
