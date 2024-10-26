@@ -1,22 +1,21 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Fall2024_Assignment3_jlcrawford3.Data;
 using Fall2024_Assignment3_jlcrawford3.Models;
+using Fall2024_Assignment3_jlcrawford3.Models.ViewModels;
+using Fall2024_Assignment3_jlcrawford3.Services;
 
 namespace Fall2024_Assignment3_jlcrawford3.Controllers
 {
     public class ActorsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly AIService _aiService;
 
-        public ActorsController(ApplicationDbContext context)
+        public ActorsController(ApplicationDbContext context, AIService aiService)
         {
             _context = context;
+            _aiService = aiService;
         }
 
         // GET: Actors
@@ -33,14 +32,42 @@ namespace Fall2024_Assignment3_jlcrawford3.Controllers
                 return NotFound();
             }
 
+            // Load actor details with related movies
             var actor = await _context.Actors
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .Include(a => a.MovieActors)
+                    .ThenInclude(ma => ma.Movie)
+                .FirstOrDefaultAsync(a => a.Id == id);
             if (actor == null)
             {
                 return NotFound();
             }
 
-            return View(actor);
+            // Create and load the view model
+            var viewModel = new ActorDetailsViewModel
+            {
+                Actor = actor,
+                Movies = actor.MovieActors?.Select(ma => ma.Movie!).ToList() ?? new List<Movie>(),
+                Tweets = new List<(string Tweet, double Sentiment)>(),
+                OverallSentiment = 0
+            };
+            try
+            {
+                viewModel.Tweets = await _aiService.GenerateActorTweetsAsync(
+                    actor.Name,
+                    actor.Gender,
+                    actor.Age
+                );
+                viewModel.OverallSentiment = viewModel.Tweets.Average(t => t.Sentiment);
+            }
+            catch (AIService.AIServiceException)
+            {
+                viewModel.Tweets = new List<(string Tweet, double Sentiment)>
+                {
+                    ("Oops! Something went wrong... Tweets are temporarily unavailable.", 0)
+                };
+            }
+
+            return View(viewModel);
         }
 
         // GET: Actors/Create
@@ -125,7 +152,7 @@ namespace Fall2024_Assignment3_jlcrawford3.Controllers
             }
 
             var actor = await _context.Actors
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(a => a.Id == id);
             if (actor == null)
             {
                 return NotFound();

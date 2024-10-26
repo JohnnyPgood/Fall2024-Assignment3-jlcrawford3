@@ -1,22 +1,21 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Fall2024_Assignment3_jlcrawford3.Data;
 using Fall2024_Assignment3_jlcrawford3.Models;
+using Fall2024_Assignment3_jlcrawford3.Models.ViewModels;
+using Fall2024_Assignment3_jlcrawford3.Services;
 
 namespace Fall2024_Assignment3_jlcrawford3.Controllers
 {
     public class MoviesController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly AIService _aiService;
 
-        public MoviesController(ApplicationDbContext context)
+        public MoviesController(ApplicationDbContext context, AIService aiService)
         {
             _context = context;
+            _aiService = aiService;
         }
 
         // GET: Movies
@@ -24,6 +23,28 @@ namespace Fall2024_Assignment3_jlcrawford3.Controllers
         {
             return View(await _context.Movies.ToListAsync());
         }
+
+        // GET: Movies/TestAI
+        public async Task<IActionResult> TestAI()
+        {
+            try 
+            {
+                var isWorking = await _aiService.VerifyConnectionAsync();
+                if (isWorking)
+                {
+                    return Content("AI Service connection test successful!");
+                }
+                else 
+                {
+                    return Content("AI Service connection test failed.");
+                }
+            }
+            catch (Exception ex)
+            {
+                return Content($"Error testing AI Service: {ex.Message}");
+            }
+        }
+
 
         // GET: Movies/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -33,14 +54,42 @@ namespace Fall2024_Assignment3_jlcrawford3.Controllers
                 return NotFound();
             }
 
+            // Load movie details with related actors
             var movie = await _context.Movies
+                .Include(m => m.MovieActors)
+                    .ThenInclude(ma => ma.Actor)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (movie == null)
             {
                 return NotFound();
             }
 
-            return View(movie);
+            // Create and load the view model
+            var viewModel = new MovieDetailsViewModel
+            {
+                Movie = movie,
+                Actors = movie.MovieActors?.Select(ma => ma.Actor!).ToList() ?? new List<Actor>(),
+                Reviews = new List<(string Review, double Sentiment)>(),
+                OverallSentiment = 0
+            };
+            try
+            {
+                viewModel.Reviews = await _aiService.GenerateMovieReviewsAsync(
+                    movie.Title, 
+                    movie.Year, 
+                    movie.Genre
+                );
+                viewModel.OverallSentiment = viewModel.Reviews.Average(r => r.Sentiment);
+            }
+            catch (AIService.AIServiceException)
+            {
+                viewModel.Reviews = new List<(string Review, double Sentiment)>
+                {
+                    ("Oops! Something went wrong... Reviews are temporarily unavailable.", 0)
+                };
+            }
+
+            return View(viewModel);
         }
 
         // GET: Movies/Create
