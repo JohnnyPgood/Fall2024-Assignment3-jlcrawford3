@@ -24,28 +24,6 @@ namespace Fall2024_Assignment3_jlcrawford3.Controllers
             return View(await _context.Movies.ToListAsync());
         }
 
-        // GET: Movies/TestAI
-        public async Task<IActionResult> TestAI()
-        {
-            try 
-            {
-                var isWorking = await _aiService.VerifyConnectionAsync();
-                if (isWorking)
-                {
-                    return Content("AI Service connection test successful!");
-                }
-                else 
-                {
-                    return Content("AI Service connection test failed.");
-                }
-            }
-            catch (Exception ex)
-            {
-                return Content($"Error testing AI Service: {ex.Message}");
-            }
-        }
-
-
         // GET: Movies/Details/5
         public async Task<IActionResult> Details(int? id)
         {

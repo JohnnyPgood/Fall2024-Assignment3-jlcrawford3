@@ -12,6 +12,19 @@ public class AIService
     private const string AiDeployment = "gpt-35-turbo";
     private const int NumCritics = 10;
     private const int NumTweets = 20;
+    private readonly string[] personas =
+    {
+        "You are a Classic Film Buff. Value plot coherence, strong acting, and timeless cinematography, often comparing to older films.",
+        "You are a Young Influencer. Keep it casual and trendy, focused on relatability and mass appeal.",
+        "You are an Academic Critic. Use a formal tone, focusing on themes, character depth, and symbolism.",
+        "You are a Genre Enthusiast, passionate about genre-specific details and fan-favorite tropes.",
+        "You are a Casual Moviegoer. Prioritize entertainment and keep a light, fun tone.",
+        "You are a Comedy Connoisseur. Add humor and wit, playfully noting clichés or surprises.",
+        "You are a Technical Expert. Focus on cinematography, effects, and directing details.",
+        "You are a Sentimental Reviewer, focused on emotional impact, soundtrack, and powerful scenes.",
+        "You are a Cynical Critic, skeptical and sharp. Note flaws with a sarcastic edge.",
+        "You are an Optimistic Viewer, highlighting the positive and encouraging a fair chance."
+    };
 
     public class AIServiceException : Exception
     {
@@ -30,102 +43,187 @@ public class AIService
 
     public async Task<List<(string Review, double Sentiment)>> GenerateMovieReviewsAsync(string title, int year, string genre)
     {
-        try
-            {
-            var chatClient = _openAIClient.GetChatClient(AiDeployment);
-            var messages = new ChatMessage[]
-            {
-                new SystemChatMessage($"You are a group of {NumCritics} different film critics, one of which is extremely sarcastic. When you receive a question, respond as each critic with each response separated by a '|', but don't indicate which critic you are."),
-                new UserChatMessage($"Write a short review of the {genre} movie {title} ({year}) in less than 150 words, and rate it out of 10.")
-            };
-
-            var result = await chatClient.CompleteChatAsync(messages);
-            if (result?.Value?.Content == null || result.Value.Content.Count == 0)
-            {
-                throw new AIServiceException("No content received from AI service.");
-            }
-
-            var reviews = result.Value.Content[0].Text
-                .Split('|')
-                .Select(s => s.Trim())
-                .Take(10)
-                .ToList();
-            if (!reviews.Any())
-            {
-                throw new AIServiceException("No valid reviews were collected.");
-            }
-
-            return reviews.Select(review => 
-            {
-                var sentiment = _sentimentAnalyzer.PolarityScores(review).Compound;
-                return (review, sentiment);
-            }).ToList();
-        }
-        catch (Exception ex) when (ex is not AIServiceException)
-        {
-            throw new AIServiceException("Failed to generate movie reviews.", ex);
-        }
+        return await MovieReviewsParallel(title, year, genre);
     }
 
     public async Task<List<(string Tweet, double Sentiment)>> GenerateActorTweetsAsync(string name, string gender, int age)
     {
-        try
-        {
-            var chatClient = _openAIClient.GetChatClient(AiDeployment);
-            var messages = new ChatMessage[]
-            {
-                new SystemChatMessage($"You are a group of {NumTweets} different social media users. When you receive a question, respond as each user with each response separated by a '|', but don't indicate which user you are."),
-                new UserChatMessage($"Write a tweet about the {gender} actor {name}, who is {age} years old. Keep each tweet under 280 characters and make them sound authentic and varied in tone.")
-            };
-
-            var result = await chatClient.CompleteChatAsync(messages);
-            if (result?.Value?.Content == null || result.Value.Content.Count == 0)
-            {
-                throw new AIServiceException("No content received from AI service.");
-            }
-
-            var tweets = result.Value.Content[0].Text
-                .Split('|')
-                .Select(s => s.Trim())
-                .Take(20)
-                .ToList();
-            if (!tweets.Any())
-            {
-                throw new AIServiceException("No valid tweets were collected.");
-            }
-
-            return tweets.Select(tweet => 
-            {
-                var sentiment = _sentimentAnalyzer.PolarityScores(tweet).Compound;
-                return (tweet, sentiment);
-            }).ToList();
-        }
-        catch (Exception ex) when (ex is not AIServiceException)
-        {
-            throw new AIServiceException("Failed to generate actor tweets.", ex);
-        }
+        return await ActorTweetsParallel(name, gender, age);
     }
 
-    public async Task<bool> VerifyConnectionAsync()
+    private async Task<List<(string Review, double Sentiment)>> MovieReviewsParallel(string title, int year, string genre)
     {
         try
         {
-            var messages = new ChatMessage[]
-            {
-                new UserChatMessage("Hello, this is a test message.")
-            };
+            var chatClient = _openAIClient.GetChatClient(AiDeployment);
+            var reviews = new List<(string Review, double Sentiment)>();
+            var attempts = 0;
+            const int maxAttempts = 20;
+            const int batchSize = 4;
 
-            var response = await _openAIClient.GetChatClient(AiDeployment).CompleteChatAsync(
-                messages
+            string[] shuffledPersonas = personas.ToArray();
+            var rng = new Random();
+            rng.Shuffle(shuffledPersonas);
+            int personaIndex = 0;
+
+            var systemMessage = new SystemChatMessage(
+                "You are a film critic providing a single concise review (2-3 sentences) " +
+                "that begins directly with the rating, not with the movie title. " +
+                "The review should focus on the film quality and style, not on individual actors. " +
+                "Suggested aspects to cover include: "+
+                "plot, screenwriting, symbolism, effects, or cinematography. " +
+                "Your response must follow this format exactly:\n" +
+                "Rating: X/10. [Your review text here]"
             );
-            Console.WriteLine($"OpenAI connection test response: {response.Value.Content[0].Text}");
 
-            return response.Value.Content.Count > 0;
+            while (reviews.Count < NumCritics && attempts < maxAttempts)
+            {
+                var remainingReviews = NumCritics - reviews.Count;
+                var currentBatchSize = Math.Min(batchSize, remainingReviews);
+                
+                var tasks = Enumerable.Range(0, currentBatchSize).Select(async i =>
+                {
+                    try
+                    {
+                        var persona = shuffledPersonas[(personaIndex + i) % shuffledPersonas.Length];
+                        var messages = new ChatMessage[]
+                        {
+                            systemMessage,
+                            new UserChatMessage(
+                                $"{persona} Review the {genre} movie {title} ({year}). "                               
+                            )
+                        };
+
+                        var response = await chatClient.CompleteChatAsync(messages);
+                        var reviewText = response.Value.Content[0].Text.Trim();
+                        
+                        if (!reviewText.Contains("/10") || !reviewText.StartsWith("Rating:"))
+                        {
+                            return ("", 0.0);
+                        }
+
+                        var sentiment = _sentimentAnalyzer.PolarityScores(reviewText).Compound;
+                        return (reviewText, sentiment);
+                    }
+                    catch (Exception)
+                    {
+                        return ("", 0.0);
+                    }
+                }).ToList();
+
+                var results = await Task.WhenAll(tasks);
+                reviews.AddRange(results.Where(r => !string.IsNullOrEmpty(r.Item1)));
+                personaIndex = (personaIndex + currentBatchSize) % shuffledPersonas.Length;
+                attempts++;
+
+                if (reviews.Count < NumCritics && attempts < maxAttempts)
+                {
+                    await Task.Delay(1000);
+                }
+            }
+
+            return reviews.Take(NumCritics).ToList();
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"OpenAI connection test failed: {ex.Message}");
-            return false;
+            throw new AIServiceException("Failed to generate movie reviews", ex);
+        }
+    }
+        
+    private (string Tweet, string Username) CleanTweetResponse(string response)
+    {
+        var parts = response.Split('@');
+        if (parts.Length != 2)
+        {
+            return ("", "");
+        }
+        if (parts[1].Contains("username"))
+        {
+            return ("", "");
+        }
+
+        return (parts[0].Trim('"'), parts[1].Trim('[', ']', '"'));
+    }
+
+    private async Task<List<(string Tweet, double Sentiment)>> ActorTweetsParallel(string name, string gender, int age)
+    {
+        try
+        {
+            var chatClient = _openAIClient.GetChatClient(AiDeployment);
+            var tweets = new List<(string Tweet, double Sentiment)>();
+            var attempts = 0;
+            const int maxAttempts = 30;
+            const int batchSize = 4;
+
+            string[] shuffledPersonas = personas.ToArray();
+            var rng = new Random();
+            rng.Shuffle(shuffledPersonas);
+            int personaIndex = 0;
+
+            var systemMessage = new SystemChatMessage(
+                "You are a social media user providing a single authentic tweet (280 characters or less) " +
+                "about an actor followed by your unique creative username. " +
+                "Your tweet should sound like it's from a genuine fan or moviegoer. " +
+                "Focus on any of these aspects: talent, memorable roles, personality, or public image. " +
+                "Actor age is provided for identification purposes only. Do not use it in your tweet. " +
+                "Your username should be imaginative, memorable, or playful, not a literal description of your persona. " +
+                "Your response must follow this format exactly:\n" +
+                "[Your tweet text here] @[Your username here]"
+            );
+
+            while(tweets.Count < NumTweets && attempts < maxAttempts)
+            {
+                var remainingTweets = NumTweets - tweets.Count;
+                var currentBatchSize = Math.Min(batchSize, remainingTweets);
+
+                var tasks = Enumerable.Range(0, currentBatchSize).Select(async i =>
+                {
+                    try
+                    {
+                        var persona = shuffledPersonas[(personaIndex + i) % shuffledPersonas.Length];
+                        var messages = new ChatMessage[]
+                        {
+                            systemMessage,
+                            new UserChatMessage(
+                                $"{persona} Write a tweet about the {gender} actor {name}, who is {age} years old."
+                            )
+                        };
+
+                        var response = await chatClient.CompleteChatAsync(messages);
+                        var rawText = response.Value.Content[0].Text.Trim();
+                        var (tweetText, username) = CleanTweetResponse(rawText);
+                        var finalText = $"{tweetText} @{username}";
+
+                        if (tweetText.Length > 280 || string.IsNullOrEmpty(tweetText) || string.IsNullOrEmpty(username))
+                        {
+                            return ("", 0.0);
+                        }
+
+                        var sentiment = _sentimentAnalyzer.PolarityScores(tweetText).Compound;
+                        return (finalText, sentiment);
+                    }
+                    catch (Exception)
+                    {
+                        return ("", 0.0);
+                    }
+                }).ToList();
+
+                var results = await Task.WhenAll(tasks);
+                tweets.AddRange(results.Where(r => !string.IsNullOrEmpty(r.Item1)));
+                personaIndex = (personaIndex + currentBatchSize) % shuffledPersonas.Length;
+                attempts++;
+
+                if (tweets.Count < NumTweets && attempts < maxAttempts)
+                {
+                    await Task.Delay(1000);
+                }
+            }
+
+            return tweets.Take(NumTweets).ToList();
+        }
+        catch (Exception ex)
+        {
+            throw new AIServiceException("Failed to generate actor tweets", ex);
         }
     }
 }
