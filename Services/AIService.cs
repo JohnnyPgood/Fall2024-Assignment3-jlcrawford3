@@ -132,17 +132,31 @@ public class AIService
         
     private (string Tweet, string Username) CleanTweetResponse(string response)
     {
-        var parts = response.Split('@');
-        if (parts.Length != 2)
+        try
         {
-            return ("", "");
-        }
-        if (parts[1].Contains("username"))
-        {
-            return ("", "");
-        }
+            int atIndex = response.IndexOf('@');
+            if ((atIndex == -1) || response.Contains("username"))
+            {
+                return ("", "");
+            }
+            string tweetText = response[..atIndex].Trim();
+            tweetText = tweetText.Trim('"', '[', ']', ' ');
+            
+            string username = response[(atIndex + 1)..];
+            int endUsername = username.IndexOfAny(new[] { ' ', ']'});
+            if (endUsername != -1)
+            {
+                tweetText = $"{tweetText} {username[(endUsername + 1)..]}";
+                username = username[..endUsername];
+            }
+            username = username.Trim('[', ']', '"', ' ');
 
-        return (parts[0].Trim('"'), parts[1].Trim('[', ']', '"'));
+            return (tweetText, username);
+        }
+        catch
+        {
+            return ("", "");
+        }
     }
 
     private async Task<List<(string Tweet, double Sentiment)>> ActorTweetsParallel(string name, string gender, int age)
