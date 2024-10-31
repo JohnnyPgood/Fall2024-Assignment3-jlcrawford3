@@ -40,7 +40,9 @@
                                         <span>No photo available</span>
                                     }
                                 </td>
-                                <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                                <td>
+                                    <a asp-action="Details" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Name)</a>
+                                </td>
                                 <td>@Html.DisplayFor(modelItem => item.Gender)</td>
                                 <td>@Html.DisplayFor(modelItem => item.Age)</td>
                                 <td>
@@ -51,7 +53,6 @@
                                 </td>
                                 <td class="action-links">
                                     <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
                                     <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                                 </td>
                             </tr>
