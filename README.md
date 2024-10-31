@@ -76,5 +76,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 For this assignment's preparation, the author has utilzied *Claude* (3.5
 Sonnet), a language model created by *Anthropic*. Within this assigment, Claude
 was used to assist in development of the AIService class, integration of AI
-API calls, integration of the ViewModels into controllers and views, and overall
-site css styling.
+API calls, integration of the ViewModels into controllers and views, overall
+site css styling, and implementing the async loading for the AI API section of
+the details pages. 
