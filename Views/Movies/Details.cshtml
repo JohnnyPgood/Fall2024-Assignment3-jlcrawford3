@@ -54,28 +54,11 @@
                 <!-- Reviews Section -->
                 <div class="reviews-section">
                     <h2 class="section-title">Critics' Reviews</h2>
-                    <div class="sentiment-summary">
-                        Overall Sentiment: <span class="sentiment-score">@Model.OverallSentiment.ToString("F2")</span>
-                    </div>
-                    
-                    <div class="reviews-container">
-                        <table class="table datatables">
-                            <thead>
-                                <tr>
-                                    <th>Review</th>
-                                    <th>Sentiment</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var (Review, Sentiment) in Model.Reviews)
-                                {
-                                    <tr>
-                                        <td>@Review</td>
-                                        <td>@Sentiment.ToString("F2")</td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
+                    <div id="reviewsContent">
+                        <div class="loading-message">
+                            <p>Stopping by concessions for popcorn and some hot takes...</p>
+                            <div class="loading-spinner"></div>
+                        </div>
                     </div>
                 </div>
 

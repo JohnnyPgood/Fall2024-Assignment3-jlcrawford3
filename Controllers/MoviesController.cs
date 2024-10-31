@@ -43,29 +43,11 @@ namespace Fall2024_Assignment3_jlcrawford3.Controllers
             }
 
             // Create and load the view model
-            var viewModel = new MovieDetailsViewModel
+             var viewModel = new MovieDetailsViewModel
             {
                 Movie = movie,
-                Actors = movie.MovieActors?.Select(ma => ma.Actor!).ToList() ?? new List<Actor>(),
-                Reviews = new List<(string Review, double Sentiment)>(),
-                OverallSentiment = 0
+                Actors = movie.MovieActors?.Select(ma => ma.Actor!).ToList() ?? new List<Actor>()
             };
-            try
-            {
-                viewModel.Reviews = await _aiService.GenerateMovieReviewsAsync(
-                    movie.Title,
-                    movie.Year,
-                    movie.Genre
-                );
-                viewModel.OverallSentiment = viewModel.Reviews.Average(r => r.Sentiment);
-            }
-            catch (AIService.AIServiceException)
-            {
-                viewModel.Reviews = new List<(string Review, double Sentiment)>
-                {
-                    ("Oops! Something went wrong... Reviews are temporarily unavailable.", 0)
-                };
-            }
 
             return View(viewModel);
         }
@@ -195,6 +177,44 @@ namespace Fall2024_Assignment3_jlcrawford3.Controllers
                 return match.Value+"/";
             }
             return url;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetMovieReviews(int id)
+        {
+            var movie = await _context.Movies.FindAsync(id);
+            if (movie == null)
+            {
+                return NotFound();
+            }
+
+            try
+            {
+                var reviews = await _aiService.GenerateMovieReviewsAsync(
+                    movie.Title,
+                    movie.Year,
+                    movie.Genre
+                );
+                
+                var formattedReviews = reviews.Select(r => new
+                {
+                    review = r.Review,
+                    sentiment = r.Sentiment
+                });
+
+                return Json(new { 
+                    reviews = formattedReviews,
+                    overallSentiment = reviews.Average(r => r.Sentiment)
+                });
+            }
+            catch (AIService.AIServiceException)
+            {
+                return Json(new
+                {
+                    reviews = new[] { new { review = "Oops! Something went wrong... Reviews are temporarily unavailable.", sentiment = 0.0 } },
+                    overallSentiment = 0.0
+                });
+            }
         }
     }
 }
