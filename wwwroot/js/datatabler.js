@@ -1,3 +1,5 @@
 $(document).ready(function () {
-    $('table.datatables').DataTable();
+    if ($('table.datatables').length) {
+        $('table.datatables').DataTable();
+    }
 });
