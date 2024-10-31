@@ -185,7 +185,6 @@ body {
 }
 
 /* -- Entity Pages ---------------------------------------------------------------------*/
-
 .page-title {
   text-align: center;
   font-size: 2.5rem;
@@ -290,6 +289,206 @@ btn-add {
 .dataTables_paginate .paginate_button.current {
   background-color: var(--theater-red) !important;
   color: var(--theater-light) !important;
+}
+
+/*-- Movie Details ---------------------------------------------------------------------*/
+.movie-details-container {
+  padding: 2rem;
+}
+
+.movie-info {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+.poster-section {
+  flex-shrink: 0;
+}
+
+.details-poster {
+  max-width: 300px;
+  border: 2px solid var(--theater-gold);
+  border-radius: 4px;
+  box-shadow: 0 0 20px var(--theater-glow);
+}
+
+.info-section {
+  flex-grow: 1;
+}
+
+.section-title {
+  color: var(--theater-gold);
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+}
+
+.cast-section {
+  margin-bottom: 3rem;
+}
+
+.cast-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.cast-link {
+  color: var(--theater-light);
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  background-color: var(--theater-dark);
+  border: 1px solid var(--theater-gold);
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.cast-link:hover {
+  background-color: var(--theater-deep-red);
+  color: var(--theater-gold);
+  box-shadow: 0 0 10px var(--theater-glow);
+}
+
+.reviews-section {
+  margin-bottom: 3rem;
+}
+
+.sentiment-summary {
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+}
+
+.sentiment-score {
+  color: var(--theater-gold);
+  font-weight: bold;
+}
+
+.reviews-container {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+  padding: 1rem;
+}
+
+/*-- Actor Details ---------------------------------------------------------------------*/
+.actor-details-container {
+  padding: 2rem;
+}
+
+.actor-info {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+.photo-section {
+  flex-shrink: 0;
+}
+
+.details-photo {
+  max-width: 300px;
+  border: 2px solid var(--theater-gold);
+  border-radius: 4px;
+  box-shadow: 0 0 20px var(--theater-glow);
+}
+
+.filmography-section {
+  margin-bottom: 3rem;
+}
+
+.movie-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.movie-link {
+  color: var(--theater-light);
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  background-color: var(--theater-dark);
+  border: 1px solid var(--theater-gold);
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.movie-link:hover {
+  background-color: var(--theater-deep-red);
+  color: var(--theater-gold);
+  box-shadow: 0 0 10px var(--theater-glow);
+}
+
+.social-section {
+  margin-bottom: 3rem;
+}
+
+.tweets-container {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+  padding: 1rem;
+}
+
+/*-- Cast Details ----------------------------------------------------------------------*/
+/* Cast Details Styling */
+.cast-details-container {
+  padding: 2rem;
+}
+
+.cast-info {
+  display: flex;
+  gap: 3rem;
+  margin-bottom: 3rem;
+  justify-content: center;
+}
+
+.media-section {
+  flex: 1;
+  max-width: 400px;
+  padding: 1.5rem;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+}
+
+.media-preview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.details-poster,
+.details-photo {
+  max-width: 250px;
+  border: 2px solid var(--theater-gold);
+  border-radius: 4px;
+  box-shadow: 0 0 20px var(--theater-glow);
+}
+
+.media-info {
+  text-align: center;
+}
+
+.media-title {
+  color: var(--theater-gold);
+  margin-bottom: 1rem;
+}
+
+.media-link {
+  color: var(--theater-light);
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  background-color: var(--theater-dark);
+  border: 1px solid var(--theater-gold);
+  border-radius: 4px;
+  transition: all 0.3s ease;
+  display: inline-block;
+}
+
+.media-link:hover {
+  background-color: var(--theater-deep-red);
+  color: var(--theater-gold);
+  box-shadow: 0 0 10px var(--theater-glow);
 }
 
 /*-- Thumbnails ------------------------------------------------------------------------*/

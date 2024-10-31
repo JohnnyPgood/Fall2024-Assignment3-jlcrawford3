@@ -1,30 +1,57 @@
 @model Fall2024_Assignment3_jlcrawford3.Models.MovieActor
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Cast Details";
 }
 
-<h1>Details</h1>
+<div class="theater-container cast-background">
+    <div class="content-card">
+        <div class="card-header">
+            <h1 class="page-title">Cast Details</h1>
+        </div>
+        <div class="card-body">
+            <div class="cast-details-container">
+                <div class="cast-info">
+                    <!-- Movie Section -->
+                    <div class="media-section">
+                        <h2 class="section-title">Movie</h2>
+                        <div class="media-preview">
+                            @if (!string.IsNullOrEmpty(Model.Movie?.Poster))
+                            {
+                                <img src="@Model.Movie.Poster" alt="@Model.Movie.Title poster" class="details-poster" />
+                            }
+                            <div class="media-info">
+                                <h3 class="media-title">@Model.Movie?.Title</h3>
+                                <a asp-controller="Movies" asp-action="Details" asp-route-id="@Model.Movie?.Id" class="media-link">
+                                    View Movie Details
+                                </a>
+                            </div>
+                        </div>
+                    </div>
 
-<div>
-    <h4>MovieActor</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Movie)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Movie!.Title)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Actor)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Actor!.Name)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+                    <!-- Actor Section -->
+                    <div class="media-section">
+                        <h2 class="section-title">Actor</h2>
+                        <div class="media-preview">
+                            @if (!string.IsNullOrEmpty(Model.Actor?.Photo))
+                            {
+                                <img src="@Model.Actor.Photo" alt="@Model.Actor.Name photo" class="details-photo" />
+                            }
+                            <div class="media-info">
+                                <h3 class="media-title">@Model.Actor?.Name</h3>
+                                <a asp-controller="Actors" asp-action="Details" asp-route-id="@Model.Actor?.Id" class="media-link">
+                                    View Actor Details
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-add">Edit</a>
+                    <a asp-action="Index" class="btn btn-back">Back to List</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

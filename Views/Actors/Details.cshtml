@@ -1,75 +1,87 @@
 @model Fall2024_Assignment3_jlcrawford3.Models.ViewModels.ActorDetailsViewModel
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Actor Details";
 }
 
-<h1>Details</h1>
+<div class="theater-container actor-background">
+    <div class="content-card">
+        <div class="card-header">
+            <h1 class="page-title">@Model.Actor.Name</h1>
+        </div>
+        <div class="card-body">
+            <div class="actor-details-container">
+                <!-- Actor Info Section -->
+                <div class="actor-info">
+                    <div class="photo-section">
+                        <img src="@Model.Actor.Photo" alt="@Model.Actor.Name photo" class="details-photo" />
+                    </div>
+                    
+                    <div class="info-section">
+                        <dl class="details-list">
+                            <dt>Gender</dt>
+                            <dd>@Model.Actor.Gender</dd>
 
-<div>
-    <h4>Actor</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Actor.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Actor.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Actor.Gender)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Actor.Gender)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Actor.Age)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Actor.Age)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Actor.Imdb)
-        </dt>
-        <dd class = "col-sm-10">
-            <a href="@Model.Actor.Imdb" target="_blank">IMDB Link</a>
-        </dd>
-        <dt class = "col-sm-2">
-            Photo
-        </dt>
-        <dd class = "col-sm-10">
-            <img src="@Model.Actor.Photo" alt="@Model.Actor.Name photo" style="max-width: 200px;" />
-        </dd>
-    </dl>
+                            <dt>Age</dt>
+                            <dd>@Model.Actor.Age</dd>
 
-    <h4>Movies</h4>
-    <ul>
-        @foreach (var movie in Model.Movies)
-        {
-            <li><a asp-controller="Movies" asp-action="Details" asp-route-id="@movie.Id">@movie.Title</a></li>
-        }
-    </ul>
+                            <dt>IMDb</dt>
+                            <dd>
+                                @{
+                                    var imdbId = Model.Actor.Imdb.Split('/').Where(x => x.StartsWith("nm")).FirstOrDefault() ?? Model.Actor.Imdb;
+                                }
+                                <a href="@Model.Actor.Imdb" target="_blank">@imdbId</a>
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
 
-    <h4>Overall Sentiment: @Model.OverallSentiment.ToString("F2")</h4>
-    <table class="table datatables">
-        <thead>
-            <tr>
-                <th>Tweets</th>
-                <th>Sentiment</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var (Tweet, Sentiment) in Model.Tweets)
-            {
-                <tr>
-                    <td>@Tweet</td>
-                    <td>@Sentiment.ToString("F2")</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Actor.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+                <!-- Filmography Section -->
+                <div class="filmography-section">
+                    <h2 class="section-title">Filmography</h2>
+                    <div class="movie-list">
+                        @foreach (var movie in Model.Movies)
+                        {
+                            <a asp-controller="Movies" asp-action="Details" asp-route-id="@movie.Id" class="movie-link">
+                                @movie.Title
+                            </a>
+                        }
+                    </div>
+                </div>
+
+                <!-- Social Media Section -->
+                <div class="social-section">
+                    <h2 class="section-title">Social Media Buzz</h2>
+                    <div class="sentiment-summary">
+                        Overall Sentiment: <span class="sentiment-score">@Model.OverallSentiment.ToString("F2")</span>
+                    </div>
+                    
+                    <div class="tweets-container">
+                        <table class="table datatables">
+                            <thead>
+                                <tr>
+                                    <th>Social Commentary</th>
+                                    <th>Sentiment</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var (Tweet, Sentiment) in Model.Tweets)
+                                {
+                                    <tr>
+                                        <td>@Tweet</td>
+                                        <td>@Sentiment.ToString("F2")</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <a asp-action="Edit" asp-route-id="@Model.Actor.Id" class="btn btn-add">Edit</a>
+                    <a asp-action="Index" class="btn btn-back">Back to List</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

@@ -1,75 +1,87 @@
 @model Fall2024_Assignment3_jlcrawford3.Models.ViewModels.MovieDetailsViewModel
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Movie Details";
 }
 
-<h1>Details</h1>
+<div class="theater-container movie-background">
+    <div class="content-card">
+        <div class="card-header">
+            <h1 class="page-title">@Model.Movie.Title</h1>
+        </div>
+        <div class="card-body">
+            <div class="movie-details-container">
+                <!-- Movie Info Section -->
+                <div class="movie-info">
+                    <div class="poster-section">
+                        <img src="@Model.Movie.Poster" alt="@Model.Movie.Title poster" class="details-poster" />
+                    </div>
+                    
+                    <div class="info-section">
+                        <dl class="details-list">
+                            <dt>Genre</dt>
+                            <dd>@Model.Movie.Genre</dd>
 
-<div>
-    <h4>Movie</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Movie.Title)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Movie.Title)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Movie.Imdb)
-        </dt>
-        <dd class="col-sm-10">
-            <a href="@Model.Movie.Imdb" target="_blank">IMDB Link</a>
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Movie.Genre)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Movie.Genre)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Movie.Year)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Movie.Year)
-        </dd>
-        <dt class = "col-sm-2">
-            Poster
-        </dt>
-        <dd class = "col-sm-10">
-            <img src="@Model.Movie.Poster" alt="@Model.Movie.Title poster" style="max-width: 200px;" />
-        </dd>
-    </dl>
+                            <dt>Year</dt>
+                            <dd>@Model.Movie.Year</dd>
 
-    <h4>Actors</h4>
-    <ul>
-        @foreach (var actor in Model.Actors)
-        {
-            <li><a asp-controller="Actors" asp-action="Details" asp-route-id="@actor.Id">@actor.Name</a></li>
-        }
-    </ul>
+                            <dt>IMDb</dt>
+                            <dd>
+                                @{
+                                    var imdbId = Model.Movie.Imdb.Split('/').Where(x => x.StartsWith("tt")).FirstOrDefault() ?? Model.Movie.Imdb;
+                                }
+                                <a href="@Model.Movie.Imdb" target="_blank">@imdbId</a>
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
 
-    <h4>Overall Sentiment: @Model.OverallSentiment.ToString("F2")</h4>
-    <table class="table datatables">
-        <thead>
-            <tr>
-                <th>Review</th>
-                <th>Sentiment</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var (Review, Sentiment) in Model.Reviews)
-            {
-                <tr>
-                    <td>@Review</td>
-                    <td>@Sentiment.ToString("F2")</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Movie.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+                <!-- Cast Section -->
+                <div class="cast-section">
+                    <h2 class="section-title">Cast</h2>
+                    <div class="cast-list">
+                        @foreach (var actor in Model.Actors)
+                        {
+                            <a asp-controller="Actors" asp-action="Details" asp-route-id="@actor.Id" class="cast-link">
+                                @actor.Name
+                            </a>
+                        }
+                    </div>
+                </div>
+
+                <!-- Reviews Section -->
+                <div class="reviews-section">
+                    <h2 class="section-title">AI Critics' Reviews</h2>
+                    <div class="sentiment-summary">
+                        Overall Sentiment: <span class="sentiment-score">@Model.OverallSentiment.ToString("F2")</span>
+                    </div>
+                    
+                    <div class="reviews-container">
+                        <table class="table datatables">
+                            <thead>
+                                <tr>
+                                    <th>Review</th>
+                                    <th>Sentiment</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var (Review, Sentiment) in Model.Reviews)
+                                {
+                                    <tr>
+                                        <td>@Review</td>
+                                        <td>@Sentiment.ToString("F2")</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <a asp-action="Edit" asp-route-id="@Model.Movie.Id" class="btn btn-add">Edit</a>
+                    <a asp-action="Index" class="btn btn-back">Back to List</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
