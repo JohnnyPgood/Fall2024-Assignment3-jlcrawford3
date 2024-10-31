@@ -6,8 +6,4 @@ public class ActorDetailsViewModel
 {
     public Actor Actor { get; set; } = default!;
     public List<Movie> Movies { get; set; } = new();
-    
-    // For AI-generated content
-    public List<(string Tweet, double Sentiment)> Tweets { get; set; } = new();
-    public double OverallSentiment { get; set; }
 }

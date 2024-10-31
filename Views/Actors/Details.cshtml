@@ -54,28 +54,11 @@
                 <!-- Social Media Section -->
                 <div class="social-section">
                     <h2 class="section-title">Social Media Buzz</h2>
-                    <div class="sentiment-summary">
-                        Overall Sentiment: <span class="sentiment-score">@Model.OverallSentiment.ToString("F2")</span>
-                    </div>
-                    
-                    <div class="tweets-container">
-                        <table class="table datatables">
-                            <thead>
-                                <tr>
-                                    <th>Tweets</th>
-                                    <th>Sentiment</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var (Tweet, Sentiment) in Model.Tweets)
-                                {
-                                    <tr>
-                                        <td>@Tweet</td>
-                                        <td>@Sentiment.ToString("F2")</td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
+                    <div id="tweetsContent">
+                        <div class="loading-message">
+                            <p>Going back for a refill on gossip with extra sarcasm...</p>
+                            <div class="loading-spinner"></div>
+                        </div>
                     </div>
                 </div>
 

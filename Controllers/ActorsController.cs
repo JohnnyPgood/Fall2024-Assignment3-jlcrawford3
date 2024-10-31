@@ -46,26 +46,8 @@ namespace Fall2024_Assignment3_jlcrawford3.Controllers
             var viewModel = new ActorDetailsViewModel
             {
                 Actor = actor,
-                Movies = actor.MovieActors?.Select(ma => ma.Movie!).ToList() ?? new List<Movie>(),
-                Tweets = new List<(string Tweet, double Sentiment)>(),
-                OverallSentiment = 0
+                Movies = actor.MovieActors?.Select(ma => ma.Movie!).ToList() ?? new List<Movie>()
             };
-            try
-            {
-                viewModel.Tweets = await _aiService.GenerateActorTweetsAsync(
-                    actor.Name,
-                    actor.Gender,
-                    actor.Age
-                );
-                viewModel.OverallSentiment = viewModel.Tweets.Average(t => t.Sentiment);
-            }
-            catch (AIService.AIServiceException)
-            {
-                viewModel.Tweets = new List<(string Tweet, double Sentiment)>
-                {
-                    ("Oops! Something went wrong... Tweets are temporarily unavailable.", 0)
-                };
-            }
 
             return View(viewModel);
         }
@@ -195,6 +177,45 @@ namespace Fall2024_Assignment3_jlcrawford3.Controllers
                 return match.Value+"/";
             }
             return url;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetActorTweets(int id)
+        {
+            var actor = await _context.Actors.FindAsync(id);
+            if (actor == null)
+            {
+                return NotFound();
+            }
+
+            try
+            {
+                var tweets = await _aiService.GenerateActorTweetsAsync(
+                    actor.Name,
+                    actor.Gender,
+                    actor.Age
+                );
+                var overallSentiment = tweets.Average(t => t.Sentiment);
+                
+                var formattedTweets = tweets.Select(t => new
+                {
+                    tweet = t.Tweet,
+                    sentiment = t.Sentiment
+                });
+
+                return Json(new { 
+                    tweets = formattedTweets,
+                    overallSentiment = overallSentiment
+                });
+            }
+            catch (AIService.AIServiceException)
+            {
+                return Json(new
+                {
+                    tweets = new[] { new { tweet = "Oops! Something went wrong... Tweets are temporarily unavailable.", sentiment = 0.0 } },
+                    overallSentiment = 0.0
+                });
+            }
         }
     }
 }
