@@ -1,38 +1,43 @@
 @model Fall2024_Assignment3_jlcrawford3.Models.MovieActor
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Add Cast Member";
 }
 
-<h1>Create</h1>
-
-<h4>MovieActor</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="MovieId" class="control-label"></label>
-                <select asp-for="MovieId" class ="form-control" asp-items="ViewBag.MovieId">
-                    <option value="">-- Select Movie --</option>
-                </select>
+<div class="theater-container cast-background">
+    <div class="content-card">
+        <div class="card-header">
+            <h1 class="page-title">Add Cast Member</h1>
+        </div>
+        <div class="card-body">
+            <div class="form-container">
+                <form asp-action="Create">
+                    <div asp-validation-summary="ModelOnly" class="validation-summary"></div>
+                    
+                    <div class="form-group">
+                        <label asp-for="MovieId" class="control-label">Movie</label>
+                        <select asp-for="MovieId" class="form-control" asp-items="ViewBag.MovieId">
+                            <option value="">-- Select Movie --</option>
+                        </select>
+                        <span asp-validation-for="MovieId" class="validation-message"></span>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label asp-for="ActorId" class="control-label">Actor</label>
+                        <select asp-for="ActorId" class="form-control" asp-items="ViewBag.ActorId">
+                            <option value="">-- Select Actor --</option>
+                        </select>
+                        <span asp-validation-for="ActorId" class="validation-message"></span>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-add">Create</button>
+                        <a asp-action="Index" class="btn btn-back">Back to List</a>
+                    </div>
+                </form>
             </div>
-            <div class="form-group">
-                <label asp-for="ActorId" class="control-label"></label>
-                <select asp-for="ActorId" class ="form-control" asp-items="ViewBag.ActorId">
-                    <option value="">-- Select Actor --</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {

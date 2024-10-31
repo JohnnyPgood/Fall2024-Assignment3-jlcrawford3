@@ -1,33 +1,55 @@
 @model Fall2024_Assignment3_jlcrawford3.Models.MovieActor
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Delete Cast Member";
 }
 
-<h1>Delete</h1>
+<div class="theater-container cast-background">
+    <div class="content-card">
+        <div class="card-header">
+            <h1 class="page-title">Delete Cast Member</h1>
+        </div>
+        <div class="card-body">
+            <div class="delete-container">
+                <div class="warning-message">
+                    Are you sure you want to remove this actor from the movie?
+                </div>
 
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>MovieActor</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Movie)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Movie!.Title)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Actor)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Actor!.Name)
-        </dd>
-    </dl>
-    
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
-    </form>
+                <div class="cast-details">
+                    <div class="media-preview">
+                        @if (!string.IsNullOrEmpty(Model.Movie?.Poster))
+                        {
+                            <div class="preview-item">
+                                <img src="@Model.Movie.Poster" alt="@Model.Movie.Title Poster" class="delete-thumbnail" />
+                                <span class="preview-label">Movie</span>
+                            </div>
+                        }
+                        @if (!string.IsNullOrEmpty(Model.Actor?.Photo))
+                        {
+                            <div class="preview-item">
+                                <img src="@Model.Actor.Photo" alt="@Model.Actor.Name Photo" class="delete-thumbnail" />
+                                <span class="preview-label">Actor</span>
+                            </div>
+                        }
+                    </div>
+
+                    <dl class="details-list">
+                        <dt>Movie</dt>
+                        <dd>@Html.DisplayFor(model => model.Movie!.Title)</dd>
+
+                        <dt>Actor</dt>
+                        <dd>@Html.DisplayFor(model => model.Actor!.Name)</dd>
+                    </dl>
+                </div>
+
+                <form asp-action="Delete" class="delete-form">
+                    <input type="hidden" asp-for="Id" />
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-delete">Delete</button>
+                        <a asp-action="Index" class="btn btn-back">Back to List</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>

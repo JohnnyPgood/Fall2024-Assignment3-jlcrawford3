@@ -1,37 +1,44 @@
 @model Fall2024_Assignment3_jlcrawford3.Models.MovieActor
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Edit Cast Member";
 }
 
-<h1>Edit</h1>
-
-<h4>MovieActor</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="MovieId" class="control-label"></label>
-                <select asp-for="MovieId" class="form-control" asp-items="ViewBag.MovieId"></select>
-                <span asp-validation-for="MovieId" class="text-danger"></span>
+<div class="theater-container cast-background">
+    <div class="content-card">
+        <div class="card-header">
+            <h1 class="page-title">Edit Cast Member</h1>
+        </div>
+        <div class="card-body">
+            <div class="form-container">
+                <form asp-action="Edit">
+                    <div asp-validation-summary="ModelOnly" class="validation-summary"></div>
+                    <input type="hidden" asp-for="Id" />
+                    
+                    <div class="form-group">
+                        <label asp-for="MovieId" class="control-label">Movie</label>
+                        <select asp-for="MovieId" class="form-control" asp-items="ViewBag.MovieId">
+                            <option value="">-- Select Movie --</option>
+                        </select>
+                        <span asp-validation-for="MovieId" class="validation-message"></span>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label asp-for="ActorId" class="control-label">Actor</label>
+                        <select asp-for="ActorId" class="form-control" asp-items="ViewBag.ActorId">
+                            <option value="">-- Select Actor --</option>
+                        </select>
+                        <span asp-validation-for="ActorId" class="validation-message"></span>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-add">Save Changes</button>
+                        <a asp-action="Index" class="btn btn-back">Back to List</a>
+                    </div>
+                </form>
             </div>
-            <div class="form-group">
-                <label asp-for="ActorId" class="control-label"></label>
-                <select asp-for="ActorId" class="form-control" asp-items="ViewBag.ActorId"></select>
-                <span asp-validation-for="ActorId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {

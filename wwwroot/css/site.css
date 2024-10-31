@@ -8,6 +8,8 @@
   --theater-dark: #121212; 
   --theater-light: #E5E5E5; 
   --theater-glow: rgba(212, 175, 55, 0.15);
+  --theater-warning: #fb4430;        /* Penn red 700 */
+  --theater-warning-hover: #fc8375;  /* Penn red 800 */
 }
 
 html {
@@ -184,6 +186,12 @@ body {
 
 /* -- Entity Pages ---------------------------------------------------------------------*/
 
+.page-title {
+  text-align: center;
+  font-size: 2.5rem;
+  color: var(--theater-light);
+}
+
 .content-card {
   background-color: var(--theater-dark);
   border: 1px solid var(--theater-red);
@@ -199,15 +207,26 @@ body {
   border-bottom: 1px solid var(--theater-gold);
 }
 
-.btn-add {
-  background-color: var(--theater-red);
-  color: var(--theater-light);
-  border: 1px solid var(--theater-gold);
+.btn-add, .btn-back {
   padding: 0.5rem 1rem;
+  border: 1px solid var(--theater-gold);
+  border-radius: 4px;
   transition: all 0.3s ease;
+  cursor: pointer;
 }
 
-.btn-add:hover {
+btn-add {
+  background-color: var(--theater-red);
+  color: var(--theater-light);
+}
+
+.btn-back {
+  background-color: var(--theater-dark);
+  color: var(--theater-light);
+  text-decoration: none;
+}
+
+.btn-add:hover, btn-back:hover {
   background-color: var(--theater-deep-red);
   color: var(--theater-gold);
   box-shadow: 0 0 10px var(--theater-glow);
@@ -273,9 +292,7 @@ body {
   color: var(--theater-light) !important;
 }
 
-/*%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%*/
-
-/* Thumbnails */
+/*-- Thumbnails ------------------------------------------------------------------------*/
 .thumbnail {
   max-width: 100px;
   height: auto;
@@ -290,7 +307,173 @@ body {
   z-index: 1000;
 }
 
-/* Responsive Design */
+/*-- Forms -----------------------------------------------------------------------------*/
+.form-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  color: var(--theater-gold);
+  margin-bottom: 0.5rem;
+}
+
+.form-control {
+  width: 100%;
+  padding: 0.5rem;
+  background-color: var(--theater-dark);
+  border: 1px solid var(--theater-gold);
+  color: var(--theater-light);
+  border-radius: 4px;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: var(--theater-gold);
+  box-shadow: 0 0 10px var(--theater-glow);
+}
+
+.form-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.validation-summary {
+  color: var(--theater-warning);
+  margin-bottom: 1rem;
+}
+
+.validation-message {
+  display: block;
+  color: var(--theater-warning);
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+select.form-control {
+  background-color: var(--theater-dark);
+  border: 1px solid var(--theater-gold);
+  color: var(--theater-light);
+  padding: 0.5rem;
+  width: 100%;
+  border-radius: 4px;
+}
+
+select.form-control:focus {
+  outline: none;
+  box-shadow: 0 0 10px var(--theater-glow);
+  border-color: var(--theater-gold);
+}
+
+select.form-control option {
+  background-color: var(--theater-dark);
+  color: var(--theater-light);
+  padding: 0.5rem;
+}
+
+/*-- Delete Pages ---------------------------------------------------------------------*/
+.delete-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.warning-message {
+  color: var(--theater-warning);
+  font-size: 1.2rem;
+  text-align: center;
+  margin-bottom: 2rem;
+  padding: 1rem;
+  border: 1px solid var(--theater-warning);
+  border-radius: 4px;
+}
+
+.movie-details, .actor-details {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+}
+
+.cast-details {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+}
+
+.poster-preview {
+  flex-shrink: 0;
+}
+
+.media-preview {
+  display: flex;
+  gap: 2rem;
+}
+
+.preview-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.preview-label {
+  color: var(--theater-gold);
+  font-size: 0.9rem;
+}
+
+.delete-thumbnail {
+  max-width: 200px;
+  border: 2px solid var(--theater-gold);
+  border-radius: 4px;
+}
+
+.details-list {
+  flex-grow: 1;
+}
+
+.details-list dt {
+  color: var(--theater-gold);
+  margin-bottom: 0.5rem;
+}
+
+.details-list dd {
+  margin-bottom: 1rem;
+  margin-left: 1rem;
+}
+
+.delete-form {
+  text-align: center;
+}
+
+.btn-delete {
+  background-color: var(--theater-warning);
+  color: var(--theater-light);
+  border: none;
+  padding: 0.5rem 1.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-delete:hover {
+  background-color: var(--theater-warning-hover);
+  box-shadow: 0 0 10px rgba(255, 82, 82, 0.4);
+}
+
+/*-- Responsive Design -----------------------------------------------------------------*/
 @media (max-width: 768px) {
   .main-content {
     width: 100%;
