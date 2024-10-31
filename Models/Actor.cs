@@ -19,10 +19,12 @@ namespace Fall2024_Assignment3_jlcrawford3.Models
 
         [Required]
         [Url]
+        [RegularExpression(@"https:\/\/www\.imdb\.com\/name\/nm\d{7,8}.*", ErrorMessage = "Please enter a valid HTTPS IMDb Actor URL.")]
         public string Imdb { get; set; } = default!;
 
         [Required]
         [Url]
+        [RegularExpression(@"(https:)(.*)*\.(?:jpg|jpeg|gif|png|webp)", ErrorMessage = "Please enter a valid HTTPS image URL.")]
         public string Photo { get; set; } = default!;
 
         // Navigation property for the many-to-many relationship between Actors and Movies

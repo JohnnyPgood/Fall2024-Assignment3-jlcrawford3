@@ -85,6 +85,7 @@ namespace Fall2024_Assignment3_jlcrawford3.Controllers
         {
             if (ModelState.IsValid)
             {
+                actor.Imdb = SanitizeImdbUrl(actor.Imdb);
                 _context.Add(actor);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -124,6 +125,7 @@ namespace Fall2024_Assignment3_jlcrawford3.Controllers
             {
                 try
                 {
+                    actor.Imdb = SanitizeImdbUrl(actor.Imdb);
                     _context.Update(actor);
                     await _context.SaveChangesAsync();
                 }
@@ -179,6 +181,20 @@ namespace Fall2024_Assignment3_jlcrawford3.Controllers
         private bool ActorExists(int id)
         {
             return _context.Actors.Any(e => e.Id == id);
+        }
+
+        private string SanitizeImdbUrl(string url)
+        {
+            if (string.IsNullOrEmpty(url))
+            {
+                return url;
+            }
+            var match = System.Text.RegularExpressions.Regex.Match(url, @"^(https:\/\/www\.imdb\.com\/name\/nm\d+)");
+            if (match.Success)
+            {
+                return match.Value+"/";
+            }
+            return url;
         }
     }
 }
