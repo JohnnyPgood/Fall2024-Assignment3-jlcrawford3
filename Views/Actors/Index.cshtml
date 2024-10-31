@@ -7,7 +7,7 @@
 <div class="theater-container actor-background">
     <div class="content-card">
         <div class="card-header">
-            <h1 class="page-title">Star Gallery</h1>
+            <h1 class="page-title">Actor Gallery</h1>
         </div>
         <div class="card-body">
             <div class="action-bar">
@@ -31,7 +31,7 @@
                                 <td>
                                     @if (!string.IsNullOrEmpty(item.Photo))
                                     {
-                                        <a href="@item.Photo" target="_blank">
+                                        <a asp-action="Details" asp-route-id="@item.Id">
                                             <img src="@item.Photo" alt="@item.Name Photo" class="thumbnail" />
                                         </a>
                                     }

@@ -14,7 +14,9 @@
                 <!-- Actor Info Section -->
                 <div class="actor-info">
                     <div class="photo-section">
-                        <img src="@Model.Actor.Photo" alt="@Model.Actor.Name photo" class="details-photo" />
+                        <a href="@Model.Actor.Photo" target="_blank">
+                            <img src="@Model.Actor.Photo" alt="@Model.Actor.Name photo" class="details-photo" />
+                        </a>
                     </div>
                     
                     <div class="info-section">
@@ -60,7 +62,7 @@
                         <table class="table datatables">
                             <thead>
                                 <tr>
-                                    <th>Social Commentary</th>
+                                    <th>Tweets</th>
                                     <th>Sentiment</th>
                                 </tr>
                             </thead>

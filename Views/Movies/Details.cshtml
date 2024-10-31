@@ -14,7 +14,9 @@
                 <!-- Movie Info Section -->
                 <div class="movie-info">
                     <div class="poster-section">
-                        <img src="@Model.Movie.Poster" alt="@Model.Movie.Title poster" class="details-poster" />
+                        <a href="@Model.Movie.Poster" target="_blank">
+                            <img src="@Model.Movie.Poster" alt="@Model.Movie.Title poster" class="details-poster" />
+                        </a>
                     </div>
                     
                     <div class="info-section">
@@ -51,7 +53,7 @@
 
                 <!-- Reviews Section -->
                 <div class="reviews-section">
-                    <h2 class="section-title">AI Critics' Reviews</h2>
+                    <h2 class="section-title">Critics' Reviews</h2>
                     <div class="sentiment-summary">
                         Overall Sentiment: <span class="sentiment-score">@Model.OverallSentiment.ToString("F2")</span>
                     </div>

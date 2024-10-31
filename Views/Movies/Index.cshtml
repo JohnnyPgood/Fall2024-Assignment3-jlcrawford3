@@ -31,7 +31,7 @@
                                 <td>
                                     @if (!string.IsNullOrEmpty(item.Poster))
                                     {
-                                        <a href="@item.Poster" target="_blank">
+                                        <a asp-action="Details" asp-route-id="@item.Id">
                                             <img src="@item.Poster" alt="@item.Title Poster" class="thumbnail" />
                                         </a>
                                     }

@@ -46,6 +46,7 @@ body {
   gap: 0.5rem;
   margin-left: 3rem;
   margin-right: 3rem;
+  font-size: 1.5rem;
 }
 
 .navbar-brand:hover {
@@ -54,8 +55,8 @@ body {
 }
 
 .navbar-brand .film-reel {
-  width: 32px;
-  height: 32px;
+  width: 36px;
+  height: 36px;
   animation: spin 10s linear infinite;
 }
 
@@ -85,6 +86,7 @@ body {
 
 .navbar-nav .nav-link {
   color: var(--theater-light) !important;
+  font-size: 1.2rem;
   transition: all 0.3s ease;
   padding: 0.5rem 1rem;
   margin: 0 0.5rem;
@@ -140,6 +142,7 @@ body {
   background-color: var(--theater-deep-red);
   border-bottom: 1px solid var(--theater-gold);
   color: var(--theater-light);
+  padding: 1.5rem;
 }
 
 .card-body {
@@ -214,7 +217,7 @@ body {
   cursor: pointer;
 }
 
-btn-add {
+.btn-add {
   background-color: var(--theater-red);
   color: var(--theater-light);
 }
@@ -240,12 +243,14 @@ btn-add {
 .datatables {
   width: 100% !important;
   color: var(--theater-light) !important;
+  font-size: 1.2rem;
 }
 
 .datatables thead th {
   background-color: var(--theater-deep-red);
   color: var(--theater-gold);
   border-bottom: 2px solid var(--theater-gold) !important;
+  font-size: 1.3rem;
 }
 
 .datatables tbody tr {
@@ -255,6 +260,10 @@ btn-add {
 
 .datatables tbody tr:hover {
   background-color: rgba(155, 17, 3, 0.2) !important;
+}
+
+.datatables td {
+  vertical-align: middle !important;
 }
 
 .action-links a {
@@ -291,6 +300,13 @@ btn-add {
   color: var(--theater-light) !important;
 }
 
+.dataTables_length,
+.dataTables_filter,
+.dataTables_info,
+.dataTables_paginate {
+    font-size: 1.2rem;
+}
+
 /*-- Movie Details ---------------------------------------------------------------------*/
 .movie-details-container {
   padding: 2rem;
@@ -299,7 +315,9 @@ btn-add {
 .movie-info {
   display: flex;
   gap: 2rem;
-  margin-bottom: 3rem;
+  margin-top: 2rem;
+  margin-bottom: 5rem;
+  margin-left: 2rem;
 }
 
 .poster-section {
@@ -315,6 +333,8 @@ btn-add {
 
 .info-section {
   flex-grow: 1;
+  max-width: 400px;
+  margin-left: 2rem;
 }
 
 .section-title {
@@ -331,6 +351,11 @@ btn-add {
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+  font-size: 1.2rem;
 }
 
 .cast-link {
@@ -358,6 +383,7 @@ btn-add {
   padding: 1rem;
   background-color: rgba(0, 0, 0, 0.2);
   border-radius: 4px;
+  font-size: 1.3rem;
 }
 
 .sentiment-score {
@@ -371,6 +397,11 @@ btn-add {
   padding: 1rem;
 }
 
+.movie-details-container .datatables td,
+.movie-details-container .datatables th {
+    padding: 2rem !important;
+}
+
 /*-- Actor Details ---------------------------------------------------------------------*/
 .actor-details-container {
   padding: 2rem;
@@ -379,7 +410,9 @@ btn-add {
 .actor-info {
   display: flex;
   gap: 2rem;
-  margin-bottom: 3rem;
+  margin-top: 2rem;
+  margin-bottom: 5rem;
+  margin-left: 2rem;
 }
 
 .photo-section {
@@ -401,6 +434,11 @@ btn-add {
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+  font-size: 1.2rem;
 }
 
 .movie-link {
@@ -427,6 +465,11 @@ btn-add {
   background-color: rgba(0, 0, 0, 0.2);
   border-radius: 4px;
   padding: 1rem;
+}
+
+.actor-details-container .datatables td,
+.actor-details-container .datatables th {
+    padding: 2rem !important;
 }
 
 /*-- Cast Details ----------------------------------------------------------------------*/
@@ -459,10 +502,26 @@ btn-add {
 
 .details-poster,
 .details-photo {
-  max-width: 250px;
-  border: 2px solid var(--theater-gold);
-  border-radius: 4px;
-  box-shadow: 0 0 20px var(--theater-glow);
+    max-width: 250px;
+    border: 2px solid var(--theater-gold);
+    border-radius: 4px;
+    box-shadow: 
+        0 0 20px var(--theater-glow),
+        0 0 40px rgba(0, 0, 0, 0.5),
+        inset 0 0 15px var(--theater-dark-gold);
+    padding: 8px;
+    background-color: rgba(18, 4, 5, 0.3);
+    transition: all 0.3s ease;
+}
+
+.details-poster:hover,
+.details-photo:hover {
+    transform: scale(1.02);
+    box-shadow: 
+        0 0 30px var(--theater-gold),
+        0 0 50px rgba(0, 0, 0, 0.6),
+        inset 0 0 20px var(--theater-dark-gold);
+    border-color: var(--theater-light);
 }
 
 .media-info {
@@ -640,17 +699,36 @@ select.form-control option {
 }
 
 .details-list {
-  flex-grow: 1;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1.5rem 1rem;
+  align-items: center;
+  padding: 2rem 1rem;
 }
 
 .details-list dt {
+  font-size: 1.3rem;
   color: var(--theater-gold);
-  margin-bottom: 0.5rem;
+  font-weight: bold;
+  padding-right: 1rem;
 }
 
 .details-list dd {
-  margin-bottom: 1rem;
-  margin-left: 1rem;
+  font-size: 1.2rem;
+  margin: 0;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+  padding: 0.75rem 1rem;
+}
+
+.details-list dd a {
+  color: var(--theater-light);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.details-list dd a:hover {
+  color: var(--theater-gold);
 }
 
 .delete-form {
