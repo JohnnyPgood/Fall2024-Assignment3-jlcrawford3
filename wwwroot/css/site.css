@@ -99,9 +99,26 @@ body {
 .theater-container {
   min-height: 100vh;
   padding: 2rem;
-  background-image: url('/images/red-curtain-background.jpg');
   background-size: cover;
   background-position: center;
+  background-attachment: fixed;
+  position: relative;
+}
+
+.home-background {
+  background-image: url('/images/red-curtain-background.jpg');
+}
+
+.movie-background {
+  background-image: url('/images/theater-screen.png');
+}
+
+.actor-background {
+  background-image: url('/images/neon-box-office.jpg');
+}
+
+.cast-background {
+  background-image: url('/images/theater-seats.png');
 }
 
 .main-card {
@@ -163,6 +180,114 @@ body {
   margin-bottom: 2rem;
   text-align: left;
   padding: 2rem 0;
+}
+
+/* -- Entity Pages ---------------------------------------------------------------------*/
+
+.content-card {
+  background-color: var(--theater-dark);
+  border: 1px solid var(--theater-red);
+  border-radius: 10px;
+  margin: 2rem auto;
+  box-shadow: 0 0 20px var(--theater-glow);
+  width: 80vw;
+}
+
+.action-bar {
+  margin: 1rem 0 2rem 0;
+  padding: 0.5rem;
+  border-bottom: 1px solid var(--theater-gold);
+}
+
+.btn-add {
+  background-color: var(--theater-red);
+  color: var(--theater-light);
+  border: 1px solid var(--theater-gold);
+  padding: 0.5rem 1rem;
+  transition: all 0.3s ease;
+}
+
+.btn-add:hover {
+  background-color: var(--theater-deep-red);
+  color: var(--theater-gold);
+  box-shadow: 0 0 10px var(--theater-glow);
+}
+
+.table-container {
+  padding: 1rem;
+  background-color: rgba(18, 4, 5, 0.5);
+  border-radius: 5px;
+}
+
+.datatables {
+  width: 100% !important;
+  color: var(--theater-light) !important;
+}
+
+.datatables thead th {
+  background-color: var(--theater-deep-red);
+  color: var(--theater-gold);
+  border-bottom: 2px solid var(--theater-gold) !important;
+}
+
+.datatables tbody tr {
+  background-color: transparent !important;
+  transition: all 0.3s ease;
+}
+
+.datatables tbody tr:hover {
+  background-color: rgba(155, 17, 3, 0.2) !important;
+}
+
+.action-links a {
+  color: var(--theater-gold);
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.action-links a:hover {
+  color: var(--theater-light);
+  text-shadow: 0 0 5px var(--theater-glow);
+}
+
+/*-- DataTables Specific ---------------------------------------------------------------*/
+.dataTables_wrapper {
+  padding: 1rem;
+  color: var(--theater-light) !important;
+}
+
+.dataTables_length select,
+.dataTables_filter input {
+  background-color: var(--theater-dark) !important;
+  color: var(--theater-light) !important;
+  border: 1px solid var(--theater-gold) !important;
+}
+
+.dataTables_paginate .paginate_button {
+  color: var(--theater-gold) !important;
+  border: 1px solid var(--theater-gold) !important;
+}
+
+.dataTables_paginate .paginate_button.current {
+  background-color: var(--theater-red) !important;
+  color: var(--theater-light) !important;
+}
+
+/*%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%*/
+
+/* Thumbnails */
+.thumbnail {
+  max-width: 100px;
+  height: auto;
+  border: 2px solid var(--theater-gold);
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.thumbnail:hover {
+  transform: scale(3);
+  box-shadow: 0 0 20px var(--theater-glow);
+  z-index: 1000;
 }
 
 /* Responsive Design */

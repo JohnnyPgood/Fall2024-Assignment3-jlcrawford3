@@ -1,59 +1,65 @@
 @model IEnumerable<Fall2024_Assignment3_jlcrawford3.Models.Movie>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Movies";
 }
 
-<h1>Index</h1>
+<div class="theater-container movie-background">
+    <div class="content-card">
+        <div class="card-header">
+            <h1 class="display-4 text-center">Movie Collection</h1>
+        </div>
+        <div class="card-body">
+            <div class="action-bar">
+                <a asp-action="Create" class="btn btn-add">Add New Movie</a>
+            </div>
+            <div class="table-container">
+                <table class="table datatables">
+                    <thead>
+                        <tr>
+                            <th>@Html.DisplayNameFor(model => model.Poster)</th>
+                            <th>@Html.DisplayNameFor(model => model.Title)</th>
+                            <th>@Html.DisplayNameFor(model => model.Genre)</th>
+                            <th>@Html.DisplayNameFor(model => model.Year)</th>
+                            <th>@Html.DisplayNameFor(model => model.Imdb)</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model) {
+                            <tr>
+                                <td>
+                                    @if (!string.IsNullOrEmpty(item.Poster))
+                                    {
+                                        <a href="@item.Poster" target="_blank">
+                                            <img src="@item.Poster" alt="@item.Title Poster" class="thumbnail" />
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <span>No poster available</span>
+                                    }
+                                </td>
+                                <td>@Html.DisplayFor(modelItem => item.Title)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Genre)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Year)</td>
+                                <td>
+                                    @{
+                                        var imdbId = item.Imdb.Split('/').Where(x => x.StartsWith("tt")).FirstOrDefault() ?? item.Imdb;
+                                    }
+                                    <a href="@item.Imdb" target="_blank">@imdbId</a>
+                                </td>
+                                <td class="action-links">
+                                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table datatables">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Imdb)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Genre)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Year)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Poster)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Imdb)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Genre)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Year)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Poster)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
