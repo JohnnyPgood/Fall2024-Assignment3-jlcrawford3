@@ -2,80 +2,68 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="card shadow-sm">
-    <div class="card-header">
-        <h1 class="display-4 text-center">Welcome to ReelReviews</h1>
-    </div>
-    <div class="card-body">
-        <div class="row">
-            <div class="col-md-8 offset-md-2 text-center mb-4">
-                <p class="lead" style="font-style: italic;">
-                    "In a world where artificial intelligence doesn't just watch your movies 
+<div class="theater-container">
+    <div class="card main-card">
+        <div class="card-header">
+            <h1 class="welcome-title">Welcome to ReelReviews</h1>
+        </div>
+        <div class="card-body">
+            <div class="main-content">
+                <p class="lead intro-quote">
+                    In a world where artificial intelligence doesn't just watch your movies 
                     for you... it judges them too!<br>
-                    One website dares to rewrite the rules of film criticism..."
+                    One website dares to rewrite the rules of film criticism...
                 </p>
-                <p class="lead">
+                <p class="lead main-description">
                     Experience a revolution in reviews with ReelReviews -- where the power of millions 
-                    of unchecked opinions have been scoured from every corner of the 'world wild web', and then
-                    used to train our AI to be the ultimate critics -- who've never actually seen a single movie.<br><br>
-                    With the ability to recall obsessive details from the most obscure films, our 
+                    of unchecked opinions have been scoured from every corner of the 'world wild web' and
+                    used to train our AI to be the ultimate critics.<br><br>
+                    With the ability to recall obsessive details from even the most obscure films, our 
                     audience of AI critics and social commentators are ready to tell you everything you never knew
                     you didn't need to know about your favorite movies and stars.
                 </p>
             </div>
-        </div>
 
-        <div class="row g-4">
-            <div class="col-md-6">
-                <div class="card h-100">
-                    <div class="card-header">
-                        <h4>The Critics' Corner</h4>
-                    </div>
-                    <div class="card-body">
-                        <p>
-                            Prepare yourself for ten mildly different voices diving deep into every frame, every scene, 
-                            every unforgettable – or entirely regrettable – moment. Our AI critics don’t just pretend 
-                            to know movies... they *insist* they’re the experts!
-                        </p>
-                        <ul>
-                            <li>From classic cinephiles to savage cynics, we’ve got every type of critic</li>
-                            <li>Sentiment analysis that uncovers every emotional twist and turn</li>
-                            <li>Raw, unfiltered takes, unlimited perspectives</li>
-                        </ul>
+            <div class="feature-container">
+                <div class="feature-section">
+                    <div class="card feature-card">
+                        <div class="card-header">
+                            <h4>The Critics' Corner</h4>
+                        </div>
+                        <div class="card-body">
+                            <p>
+                                Brace yourself for ten slightly varied takes on a movie's most obvious highlights. Our AI
+                                critics wade toe-deep into the shallow end of film analysis, and come back dripping with expert
+                                takes on every movie they've never seen.
+                            </p>
+                            <ul>
+                                <li>Every stereotype, from classic cinephiles to savage cynics</li>
+                                <li>Sentiment analysis that decodes the emotional nuiance so you don't have to</li>
+                                <li>Tame, filtered takes, that'll leave you wanting more</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="col-md-6">
-                <div class="card h-100">
-                    <div class="card-header">
-                        <h4>Star Power</h4>
-                    </div>
-                    <div class="card-body">
-                        <p>
-                            And that's not all... step into the heart of digital buzz with AI-driven social commentary, 
-                            capturing the pulse of public opinion on every star in Hollywood!
-                        </p>
-                        <ul>
-                            <li>20 distinct social perspectives</li>
-                            <li>From fan frenzies to sharp critical insights</li>
-                            <li>Real-time sentiment tracking that never misses a beat</li>
-                        </ul>
+                <div class="feature-section">
+                    <div class="card feature-card">
+                        <div class="card-header">
+                            <h4>Star Power</h4>
+                        </div>
+                        <div class="card-body">
+                            <p>
+                                Actors won't escape the AI scruitiny or admiration either! Expect tweets that capture every
+                                unforgettable quirk and well known reference. From the Kool-aid drinkers to the haters, our AI
+                                will keep it fresh by saying everything that's already been said.
+                            </p>
+                            <ul>
+                                <li>20 distinct social perspectives</li>
+                                <li>Complete tweets with semi-coherent hashtags and unsernames</li>
+                                <li>Real-time sentiment tracking that never really makes sense</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
-
-        <div class="row mt-4">
-            <div class="col-12 text-center">
-                <p class="lead" style="font-style: italic;">
-                    "The future of movie reviews has arrived... only at ReelReviews."
-                </p>
-                <p>
-                    Ready to experience criticism like never before? Check out our 
-                    <a asp-controller="Movies" asp-action="Index">Movies</a> or 
-                    <a asp-controller="Actors" asp-action="Index">Actors</a> sections!
-                </p>
             </div>
         </div>
     </div>
