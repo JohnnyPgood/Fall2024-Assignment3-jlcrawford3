@@ -53,8 +53,8 @@ namespace Fall2024_Assignment3_jlcrawford3.Controllers
             try
             {
                 viewModel.Reviews = await _aiService.GenerateMovieReviewsAsync(
-                    movie.Title, 
-                    movie.Year, 
+                    movie.Title,
+                    movie.Year,
                     movie.Genre
                 );
                 viewModel.OverallSentiment = viewModel.Reviews.Average(r => r.Sentiment);
@@ -85,6 +85,7 @@ namespace Fall2024_Assignment3_jlcrawford3.Controllers
         {
             if (ModelState.IsValid)
             {
+                movie.Imdb = SanitizeImdbUrl(movie.Imdb);
                 _context.Add(movie);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -124,6 +125,7 @@ namespace Fall2024_Assignment3_jlcrawford3.Controllers
             {
                 try
                 {
+                    movie.Imdb = SanitizeImdbUrl(movie.Imdb);
                     _context.Update(movie);
                     await _context.SaveChangesAsync();
                 }
@@ -179,6 +181,20 @@ namespace Fall2024_Assignment3_jlcrawford3.Controllers
         private bool MovieExists(int id)
         {
             return _context.Movies.Any(e => e.Id == id);
+        }
+
+        private string SanitizeImdbUrl(string url)
+        {
+            if (string.IsNullOrEmpty(url))
+            {
+                return url;
+            }
+            var match = System.Text.RegularExpressions.Regex.Match(url, @"^(https:\/\/www\.imdb\.com\/title\/tt\d+)");
+            if (match.Success)
+            {
+                return match.Value+"/";
+            }
+            return url;
         }
     }
 }
